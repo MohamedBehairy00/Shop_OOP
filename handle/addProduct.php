@@ -14,7 +14,7 @@ if ($request->check($request->post('submit'))) {
 
     // 2- Price
     $price = $request->filtr($request->post('price'));
-    $validation->endValidate($price, "Price", ["Required", "numeric"]);
+    $validation->endValidate($price, "Price", ["Required", "numric"]);
     $errors = array_merge($errors, $validation->getError());
 
     // 3- Desc
@@ -23,7 +23,6 @@ if ($request->check($request->post('submit'))) {
     $errors = array_merge($errors, $validation->getError());
 
     // 4 - Image Validation
-    $imageValidator = new \Work\Shop_OOP\classes\ImageValidation();
     $imageValidator->validateImage();
     $imageErrors = $imageValidator->getErrors();
 

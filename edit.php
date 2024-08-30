@@ -41,7 +41,7 @@ $Products = $products->SelectOne("*", "products", "$id");
 
                 <div class="mb-3">
                     <label for="formFile" class="form-label">Image:</label>
-                    <input class="form-control" type="file" id="formFile" name="img">
+                    <input class="form-control" type="file" id="formFile" name="image">
                 </div>
 
                 <div class="col-lg-3">

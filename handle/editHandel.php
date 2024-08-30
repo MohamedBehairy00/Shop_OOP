@@ -15,7 +15,7 @@ if ($request->check($request->post('submit')) && $request->check($request->get('
 
     // 2- Price
     $price = $request->filtr($request->post('price'));
-    $validation->endValidate($price, "Price", ["Required", "numeric"]);
+    $validation->endValidate($price, "Price", ["Required", "numric"]);
     $errors = array_merge($errors, $validation->getError());
 
     // 3- Description
@@ -25,12 +25,21 @@ if ($request->check($request->post('submit')) && $request->check($request->get('
 
     // 4 - Image Validation
     $imageValidator->validateImage();
-    $newName = $imageValidator->getNewName();
-    $tmp_name = $imageValidator->getTempName();
     $errors = array_merge($errors, $imageValidator->getErrors());
 
     // Check Errors
     if (empty($errors)) {
+              // Get the validated image name and temp name
+              $newName = $imageValidator->getNewName();
+              $tmp_name = $imageValidator->getTempName();
+
+              $query="select * from products where id=$id" ;
+              $runQuery = mysqli_query($connection,$query) ;
+              if (mysqli_num_rows($runQuery) > 0) {
+                $Products = mysqli_fetch_assoc($runQuery);
+                $oldImage = $Products['image'] ;
+              }
+      
         // Update the product in the database
         $query = "UPDATE products SET `name` = '$name', `price` = '$price', `desc` = '$desc'";
         if ($newName) {
@@ -42,11 +51,10 @@ if ($request->check($request->post('submit')) && $request->check($request->get('
 
         if ($runQuery) {
             // If a new image is uploaded, delete the old image and move the new one
-            if ($newName && !empty($Products['image'])) { // Ensure old image is not empty
-                unlink("../images/" . $Products['image']);
+            if (!empty($newName)) { // Ensure old image is not empty
+                unlink("../images/".$oldImage);
                 move_uploaded_file($tmp_name, "../images/$newName");
             }
-
             $session->set("success", "Product updated successfully");
             $request->redirect("../home.php");
         } else {

@@ -31,7 +31,7 @@ $Products = $products->SelectAll('*','products');
 <div class="col-lg-4 mb-3">
 
     <div class="card">
-        <img src="images/<?= $product['image'] ?>" class="card-img-top">
+        <img src="images/<?php echo  $product['image'] ?>" class="card-img-top">
         <div class="card-body">
             <h5 class="card-title"><?php echo  $product['name'] ?></h5>
             <p class="text-muted"><?php echo  $product['price'] ?></p>
